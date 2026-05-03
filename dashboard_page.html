@@ -129,10 +129,8 @@
         <div class="col">
             <div class="container rounded-lg mb-4">
                 <h2>All Users</h2>
-                <div>
-                    <button class="btn btn-secondary">All</button>
-                    <button class="btn btn-secondary">Jonathan</button>
-                    <button class="btn btn-secondary">Robot</button>
+                <div id="userSelectionHolder">
+                    <p>Loading...</p>
                 </div>
             </div>
             <div class="container rounded-lg">
@@ -155,5 +153,25 @@
             </div>
         </div>
     </div>
+    <script>
+        async function getUsers() {
+            const holder = "userSelectionHolder"
+            
+            // fetching api
+            const res = await fetch("https://jsonplaceholder.typicode.com/users")
+            const data = await res.json()
+            console.log(data)
+
+            // build element
+            let buttonElement = `<button class="btn btn-secondary mb-2 me-2">All</button>`
+            data.forEach(user => {
+                buttonElement += `<button class="btn btn-secondary mb-2 me-2">${user.name}</button>`
+            });
+            
+            // render element
+            document.getElementById(holder).innerHTML = buttonElement
+        }
+        getUsers()
+    </script>
 </body>
 </html>
