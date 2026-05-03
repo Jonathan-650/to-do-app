@@ -94,27 +94,46 @@
 <body class="bg-dark p-4">
     <h1 class="fw-bold">Announcements</h1>
     <p>Sunday, 19th of April 2026</p>
-    <div>
-        <div class="container rounded-lg mb-4">
-            <div class="row">
-                <div class="col-lg-4 col-md-5 col-sm-12">
-                    <img src="" alt="" class="img img-fluid">
-                </div>
-                <div class="col-lg-8 col-md-7 col-sm-12S">
-                    <h4>Informasi Libur Random</h4>
-                    <hr style="height:3px; background-color: grey; border:none;"/>
-                    <p>desc</p>
-                    <div class="d-flex justify-content-between">
-                        <p class="mb-0">author</p>
-                        <p class="mb-0">date</p>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
+    <div id="announcementHolder">
+        <p>Loading...</p>
     </div>
     <script>
-        
+        async function getAnnouncements() {
+            const holder = "announcementHolder"
+            
+            // fetching api
+            const res = await fetch("https://newsapi.org/v2/everything?q=tesla&from=2026-04-03&sortBy=publishedAt&apiKey=")
+            const data = await res.json()
+            if (!data) return
+            console.log(data.articles)
+
+            // build element
+            let announcementsElement = ""
+            data.articles.forEach(ann => {
+                announcementsElement += `
+                    <div class="container rounded-lg mb-4">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-5 col-sm-12">
+                                <img src="${ann.urlToImage}" alt="${ann.urlToImage}" class="img img-fluid">
+                            </div>
+                            <div class="col-lg-8 col-md-7 col-sm-12S">
+                                <h4>${ann.title}</h4>
+                                <hr style="height:3px; background-color: grey; border:none;"/>
+                                <p>${ann.description}</p>
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-0">${ann.author ?? "<span class='text-secondary fst-italic'>No Author</span>"}</p>
+                                    <p class="mb-0">${ann.publishedAt}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            });
+            
+            // render element
+            document.getElementById(holder).innerHTML = announcementsElement
+        }
+        getAnnouncements()
     </script>
 </body>
 </html>
