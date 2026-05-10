@@ -102,9 +102,8 @@
             const holder = "announcementHolder"
             
             // fetching api
-            const res = await fetch("https://newsapi.org/v2/everything?q=tesla&from=2026-04-03&sortBy=publishedAt&apiKey=")
+            const res = await fetch("https://newsapi.org/v2/everything?q=tesla&from=2026-04-03&sortBy=publishedAt&apiKey=APIKEY")
             const data = await res.json()
-            if (!data) return
             console.log(data.articles)
 
             // build element
